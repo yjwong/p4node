@@ -1,0 +1,36 @@
+{
+  "name": "p4node",
+  "version": "1.0.0",
+  "description": "Node.js module to interface with Perforce.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yjwong/p4node.git"
+  },
+  "keywords": [
+    "perforce",
+    "p4",
+    "node"
+  ],
+  "author": "Wong Yong Jie <yjwong92@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yjwong/p4node/issues"
+  },
+  "homepage": "https://github.com/yjwong/p4node#readme",
+  "dependencies": {
+    "nan": "^2.4.0",
+    "node-pre-gyp": "^0.6.30"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.6.5"
+  },
+  "binary": {
+    "module_name": "p4node",
+    "module_path": "./lib/binding/",
+    "host": "https://p4node.s3-ap-southeast-1.amazonaws.com"
+  }
+}
