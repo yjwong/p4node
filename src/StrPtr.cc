@@ -51,7 +51,7 @@ namespace p4node {
     }
 
     StrPtr* strPtr;
-    if (info.Length() == 1) {
+    if (info.Length() >= 1) {
       if (!info[0]->IsExternal()) {
         return Nan::ThrowTypeError("First argument must be a StrPtr object");
       }
@@ -120,7 +120,7 @@ namespace p4node {
     Nan::HandleScope scope;
     StrPtr* obj = ObjectWrap::Unwrap<StrPtr>(info.This());
 
-    if (info.Length() == 1) {
+    if (info.Length() >= 1) {
       if (!info[0]->IsNumber()) {
         return Nan::ThrowTypeError("First argument must be a number");
       }

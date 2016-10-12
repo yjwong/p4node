@@ -14,28 +14,43 @@ namespace p4node {
 
   private:
     static NAN_METHOD(New);
+
+    static NAN_METHOD(SetProtocol);
+    static NAN_METHOD(SetProtocolV);
+
+    static NAN_METHOD(Init);
+    static NAN_METHOD(Final);
+    static NAN_METHOD(Dropped);
+    static NAN_METHOD(GetErrors);
+    static NAN_METHOD(GetTrans);
+    static NAN_METHOD(IsUnicode);
+
+    static NAN_METHOD(RunTag);
+    static NAN_METHOD(WaitTag);
+
+    static NAN_METHOD(SetCharset);
+    static NAN_METHOD(SetClient);
+    static NAN_METHOD(SetCwd);
+    static NAN_METHOD(SetCwdNoReload);
+    static NAN_METHOD(SetHost);
+    static NAN_METHOD(SetIgnoreFile);
+    static NAN_METHOD(SetLanguage);
+    static NAN_METHOD(SetPassword);
+    static NAN_METHOD(SetPort);
+    static NAN_METHOD(SetUser);
+    static NAN_METHOD(SetProg);
+    static NAN_METHOD(SetVersion);
+    static NAN_METHOD(SetTicketFile);
+    static NAN_METHOD(SetEnviroFile);
+
+    static NAN_METHOD(DefineCharset);
     static NAN_METHOD(DefineClient);
     static NAN_METHOD(DefineHost);
     static NAN_METHOD(DefineIgnoreFile);
+    static NAN_METHOD(DefineLanguage);
     static NAN_METHOD(DefinePassword);
     static NAN_METHOD(DefinePort);
     static NAN_METHOD(DefineUser);
-    static NAN_METHOD(Dropped);
-    static NAN_METHOD(Init);
-    static NAN_METHOD(Run);
-    static NAN_METHOD(Final);
-    static NAN_METHOD(SetClient);
-    static NAN_METHOD(SetCwd);
-    static NAN_METHOD(SetHost);
-    static NAN_METHOD(SetIgnoreFile);
-    static NAN_METHOD(SetPassword);
-    static NAN_METHOD(SetPort);
-    static NAN_METHOD(SetProg);
-    static NAN_METHOD(SetProtocol);
-    static NAN_METHOD(SetProtocolV);
-    static NAN_METHOD(SetUi);
-    static NAN_METHOD(SetUser);
-    static NAN_METHOD(SetVersion);
 
     static NAN_METHOD(GetCharset);
     static NAN_METHOD(GetClient);
