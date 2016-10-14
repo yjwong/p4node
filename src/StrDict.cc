@@ -20,6 +20,10 @@ namespace p4node {
 
   StrDict::~StrDict() {}
 
+  ::StrDict* StrDict::Unwrap() {
+    return _obj;
+  }
+
   void StrDict::Init(Handle<Object> exports) {
     Nan::HandleScope scope;
 
