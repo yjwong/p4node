@@ -20,6 +20,10 @@ namespace p4node {
 
   FileSys::~FileSys() {}
 
+  ::FileSys* FileSys::Unwrap() {
+    return _obj;
+  }
+
   void FileSys::Init(Handle<Object> exports) {
     Nan::HandleScope scope;
 

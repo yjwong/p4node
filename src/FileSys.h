@@ -11,6 +11,7 @@ namespace p4node {
   public:
     static Nan::Persistent<v8::FunctionTemplate> constructor_template;
     static void Init(v8::Handle<v8::Object> exports);
+    ::FileSys* Unwrap();
 
   private:
     static NAN_METHOD(New);

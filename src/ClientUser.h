@@ -22,7 +22,23 @@ namespace p4node {
     static NAN_METHOD(OutputInfo);
     static NAN_METHOD(OutputBinary);
     static NAN_METHOD(OutputText);
+
     static NAN_METHOD(OutputStat);
+
+    //static NAN_METHOD(Prompt);
+    static NAN_METHOD(ErrorPause);
+
+    static NAN_METHOD(Edit);
+    static NAN_METHOD(Diff);
+    static NAN_METHOD(Merge);
+    //static NAN_METHOD(Resolve);
+    static NAN_METHOD(Help);
+
+    static NAN_METHOD(File);
+    //static NAN_METHOD(CreateProgress);
+    static NAN_METHOD(ProgressIndicator);
+
+    static NAN_METHOD(Finished);
 
     explicit ClientUser();
     ~ClientUser();
