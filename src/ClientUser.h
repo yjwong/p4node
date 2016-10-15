@@ -40,6 +40,11 @@ namespace p4node {
 
     static NAN_METHOD(Finished);
 
+    static NAN_METHOD(SetOutputCharset);
+    static NAN_METHOD(DisableTmpCleanup);
+    static NAN_METHOD(SetQuiet);
+    static NAN_METHOD(CanAutoLoginPrompt);
+
     explicit ClientUser();
     ~ClientUser();
 

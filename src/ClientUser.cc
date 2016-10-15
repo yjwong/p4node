@@ -63,6 +63,11 @@ namespace p4node {
 
     Nan::SetPrototypeMethod(tpl, "Finished", Finished);
 
+    Nan::SetPrototypeMethod(tpl, "SetOutputCharset", SetOutputCharset);
+    Nan::SetPrototypeMethod(tpl, "DisableTmpCleanup", DisableTmpCleanup);
+    Nan::SetPrototypeMethod(tpl, "SetQuiet", SetQuiet);
+    Nan::SetPrototypeMethod(tpl, "CanAutoLoginPrompt", CanAutoLoginPrompt);
+
     constructor_template.Reset(tpl);
     exports->Set(Nan::New("ClientUser").ToLocalChecked(), tpl->GetFunction());
   }
@@ -489,5 +494,43 @@ namespace p4node {
     ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
     ui->_obj->Finished();
     info.GetReturnValue().Set(Nan::Undefined());
+  }
+
+  NAN_METHOD(ClientUser::SetOutputCharset) {
+    Nan::HandleScope scope;
+
+    if (info.Length() < 1) {
+      return Nan::ThrowTypeError("SetOutputCharset requires at least 1 argument");
+    }
+
+    if (!info[0]->IsNumber()) {
+      return Nan::ThrowTypeError("First argument must be a number");
+    }
+
+    Local<Int32> charsetInt32 = Nan::To<Int32>(info[0]).ToLocalChecked();
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    ui->_obj->SetOutputCharset(charsetInt32->Value());
+
+    info.GetReturnValue().Set(Nan::Undefined());
+  }
+
+  NAN_METHOD(ClientUser::DisableTmpCleanup) {
+    Nan::HandleScope scope;
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    ui->_obj->DisableTmpCleanup();
+    info.GetReturnValue().Set(Nan::Undefined());
+  }
+
+  NAN_METHOD(ClientUser::SetQuiet) {
+    Nan::HandleScope scope;
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    ui->_obj->SetQuiet();
+    info.GetReturnValue().Set(Nan::Undefined());
+  }
+
+  NAN_METHOD(ClientUser::CanAutoLoginPrompt) {
+    Nan::HandleScope scope;
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    info.GetReturnValue().Set(Nan::New<Number>(ui->_obj->CanAutoLoginPrompt()));
   }
 }
