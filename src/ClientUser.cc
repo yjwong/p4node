@@ -81,6 +81,10 @@ namespace p4node {
 
     ClientUser* client = new ClientUser();
     client->Wrap(info.This());
+
+    Nan::SetAccessor(info.This(), Nan::New("varList").ToLocalChecked(), GetVarList, SetVarList);
+    //Nan::SetAccessor(info.This(), Nan::New("enviro").ToLocalChecked(), GetEnviro, SetEnviro);
+
     info.GetReturnValue().Set(info.This());
   }
 
@@ -532,5 +536,26 @@ namespace p4node {
     Nan::HandleScope scope;
     ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
     info.GetReturnValue().Set(Nan::New<Number>(ui->_obj->CanAutoLoginPrompt()));
+  }
+
+  NAN_GETTER(ClientUser::GetVarList) {
+    Nan::HandleScope scope;
+
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    StrDict* newStrDict = new StrDict(ui->_obj->varList);
+
+    Local<FunctionTemplate> tpl = Nan::New(StrDict::constructor_template);
+    Local<Function> func = tpl->GetFunction();
+    Handle<Value> newFuncArgs[] = { Nan::New<External>(newStrDict) };
+    Local<Object> newObj = Nan::NewInstance(func, 1, newFuncArgs).ToLocalChecked();
+
+    info.GetReturnValue().Set(newObj);
+  }
+
+  NAN_SETTER(ClientUser::SetVarList) {
+    Nan::HandleScope scope;
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    StrDict* strDict = ObjectWrap::Unwrap<StrDict>(value->ToObject());
+    ui->_obj->varList = strDict->Unwrap();
   }
 }

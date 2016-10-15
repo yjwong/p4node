@@ -11,15 +11,16 @@ namespace p4node {
   friend class ClientApi;
   public:
     static Nan::Persistent<v8::FunctionTemplate> constructor_template;
+
+    explicit StrDict(::StrDict* obj);
+    ~StrDict();
+
     static void Init(v8::Handle<v8::Object> exports);
     ::StrDict* Unwrap();
 
   private:
     static NAN_METHOD(New);
     static NAN_METHOD(SetArgv);
-
-    explicit StrDict(::StrDict* obj);
-    ~StrDict();
 
     ::StrDict* _obj;
   };

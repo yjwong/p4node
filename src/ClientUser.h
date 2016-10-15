@@ -45,6 +45,11 @@ namespace p4node {
     static NAN_METHOD(SetQuiet);
     static NAN_METHOD(CanAutoLoginPrompt);
 
+    static NAN_GETTER(GetVarList);
+    static NAN_SETTER(SetVarList);
+    //static NAN_GETTER(SetEnviro);
+    //static NAN_GETTER(GetEnviro);
+
     explicit ClientUser();
     ~ClientUser();
 
