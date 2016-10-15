@@ -1,5 +1,6 @@
 #include <node.h>
 #include "Error.h"
+#include "StrDict.h"
 #include "ClientUser.h"
 
 using v8::FunctionTemplate;
