@@ -10,6 +10,11 @@ namespace p4node {
   class StrPtr : public node::ObjectWrap {
   public:
     static Nan::Persistent<v8::FunctionTemplate> constructor_template;
+
+    explicit StrPtr();
+    explicit StrPtr(::StrPtr* obj);
+    ~StrPtr();
+
     static void Init(v8::Handle<v8::Object> exports);
 
   private:
@@ -20,10 +25,6 @@ namespace p4node {
     static NAN_METHOD(IsNumeric);
     static NAN_METHOD(EndsWith);
     static NAN_METHOD(SetLength);
-
-    explicit StrPtr();
-    explicit StrPtr(::StrPtr* obj);
-    ~StrPtr();
 
     ::StrPtr* _obj;
   };

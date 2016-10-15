@@ -17,8 +17,10 @@ namespace p4node {
 
     static NAN_METHOD(SetProtocol);
     static NAN_METHOD(SetProtocolV);
+    static NAN_METHOD(GetProtocol);
 
     static NAN_METHOD(Init);
+    static NAN_METHOD(Run);
     static NAN_METHOD(Final);
     static NAN_METHOD(Dropped);
     static NAN_METHOD(GetErrors);

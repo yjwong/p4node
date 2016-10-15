@@ -2,6 +2,7 @@
 #include "ClientApi.h"
 #include "ClientUser.h"
 #include "StrDict.h"
+#include "StrPtr.h"
 #include "Error.h"
 
 using v8::FunctionTemplate;
@@ -10,6 +11,9 @@ using v8::Object;
 using v8::Local;
 using v8::Number;
 using v8::String;
+using v8::Function;
+using v8::Value;
+using v8::External;
 
 namespace p4node {
   Nan::Persistent<FunctionTemplate> ClientApi::constructor_template;
@@ -34,8 +38,10 @@ namespace p4node {
     // Prototype
     Nan::SetPrototypeMethod(tpl, "SetProtocol", SetProtocol);
     Nan::SetPrototypeMethod(tpl, "SetProtocolV", SetProtocolV);
+    Nan::SetPrototypeMethod(tpl, "GetProtocol", GetProtocol);
 
     Nan::SetPrototypeMethod(tpl, "Init", Init);
+    Nan::SetPrototypeMethod(tpl, "Run", Run);
     Nan::SetPrototypeMethod(tpl, "Final", Final);
     Nan::SetPrototypeMethod(tpl, "Dropped", Dropped);
     Nan::SetPrototypeMethod(tpl, "GetErrors", GetErrors);
@@ -143,6 +149,29 @@ namespace p4node {
     info.GetReturnValue().Set(Nan::Undefined());
   }
 
+  NAN_METHOD(ClientApi::GetProtocol) {
+    Nan::HandleScope scope;
+
+    if (info.Length() < 1) {
+      return Nan::ThrowTypeError("GetProtocol requires at least 1 argument");
+    }
+
+    if (!info[0]->IsString()) {
+      return Nan::ThrowTypeError("First argument must be a string");
+    }
+
+    Nan::Utf8String* varString = new Nan::Utf8String(info[0]->ToString());
+    ClientApi* obj = ObjectWrap::Unwrap<ClientApi>(info.This());
+    StrPtr* newStrPtr = new StrPtr(obj->_obj->GetProtocol(varString->operator*()));
+
+    Local<FunctionTemplate> tpl = Nan::New(StrPtr::constructor_template);
+    Local<Function> func = tpl->GetFunction();
+    Handle<Value> newFuncArgs[] = { Nan::New<External>(newStrPtr) };
+    Local<Object> newObj = Nan::NewInstance(func, 1, newFuncArgs).ToLocalChecked();
+
+    info.GetReturnValue().Set(newObj);
+  }
+
   NAN_METHOD(ClientApi::Init) {
     Nan::HandleScope scope;
 
@@ -158,6 +187,31 @@ namespace p4node {
     } else {
       return Nan::ThrowTypeError("First argument must be an Error object");
     }
+
+    info.GetReturnValue().Set(Nan::Undefined());
+  }
+
+  NAN_METHOD(ClientApi::Run) {
+    Nan::HandleScope scope;
+
+    if (info.Length() < 2) {
+      return Nan::ThrowTypeError("Run requires at least 2 arguments");
+    }
+
+    if (!info[0]->IsString()) {
+      return Nan::ThrowTypeError("First argument must be a string");
+    }
+
+    if (!info[1]->IsObject()) {
+      return Nan::ThrowTypeError("Second argument must be a ClientUser object");
+    }
+
+    Nan::Utf8String* funcString = new Nan::Utf8String(info[0]->ToString());
+    Local<Object> uiObj = info[1]->ToObject();
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(uiObj);
+
+    ClientApi* obj = ObjectWrap::Unwrap<ClientApi>(info.This());
+    obj->_obj->Run(funcString->operator*(), ui->Unwrap());
 
     info.GetReturnValue().Set(Nan::Undefined());
   }
