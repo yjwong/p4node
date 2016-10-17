@@ -6,6 +6,7 @@
         "src/p4node.cc",
         "src/ClientApi.cc",
         "src/ClientUser.cc",
+        "src/ClientUserWrapper.cc",
         "src/Error.cc",
         "src/FileSys.cc",
         "src/StrDict.cc",

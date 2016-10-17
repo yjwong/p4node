@@ -19,14 +19,14 @@ namespace p4node {
   Nan::Persistent<FunctionTemplate> ClientUser::constructor_template;
 
   ClientUser::ClientUser() {
-    _obj = new ::ClientUser();
+    _obj = new ClientUserWrapper();
   }
 
   ClientUser::~ClientUser() {
     delete _obj;
   }
 
-  ::ClientUser* ClientUser::Unwrap() {
+  ClientUserWrapper* ClientUser::Unwrap() {
     return _obj;
   }
 
@@ -67,6 +67,8 @@ namespace p4node {
     Nan::SetPrototypeMethod(tpl, "DisableTmpCleanup", DisableTmpCleanup);
     Nan::SetPrototypeMethod(tpl, "SetQuiet", SetQuiet);
     Nan::SetPrototypeMethod(tpl, "CanAutoLoginPrompt", CanAutoLoginPrompt);
+
+    Nan::SetPrototypeMethod(tpl, "SetCallbacks", SetCallbacks);
 
     constructor_template.Reset(tpl);
     exports->Set(Nan::New("ClientUser").ToLocalChecked(), tpl->GetFunction());
@@ -536,6 +538,24 @@ namespace p4node {
     Nan::HandleScope scope;
     ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
     info.GetReturnValue().Set(Nan::New<Number>(ui->_obj->CanAutoLoginPrompt()));
+  }
+
+  NAN_METHOD(ClientUser::SetCallbacks) {
+    Nan::HandleScope scope;
+
+    if (info.Length() < 1) {
+      return Nan::ThrowTypeError("SetCallbacks requires at least 1 argument");
+    }
+
+    if (!info[0]->IsObject()) {
+      return Nan::ThrowTypeError("First argument must be an object");
+    }
+
+    Local<Object> callbacksObj = info[0]->ToObject();
+    ClientUser* ui = ObjectWrap::Unwrap<ClientUser>(info.This());
+    ui->_obj->SetCallbacks(callbacksObj);
+
+    info.GetReturnValue().Set(Nan::Undefined());
   }
 
   NAN_GETTER(ClientUser::GetVarList) {

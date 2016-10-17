@@ -10,8 +10,7 @@ if (e.Test()) {
 }
 
 client.SetArgv(0, []);
-//console.log(client.GetConfig());
-client.RunTag("info", ui);
+client.Run("info", ui);
 client.Final(e);
 
 if (e.Test()) {

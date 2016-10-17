@@ -4,14 +4,14 @@
 #include <node.h>
 #include <node_object_wrap.h>
 #include "nan.h"
-#include "p4/clientapi.h"
+#include "ClientUserWrapper.h"
 
 namespace p4node {
   class ClientUser : public node::ObjectWrap {
   public:
     static Nan::Persistent<v8::FunctionTemplate> constructor_template;
     static void Init(v8::Handle<v8::Object> exports);
-    ::ClientUser* Unwrap();
+    ClientUserWrapper* Unwrap();
 
   private:
     static NAN_METHOD(New);
@@ -45,6 +45,8 @@ namespace p4node {
     static NAN_METHOD(SetQuiet);
     static NAN_METHOD(CanAutoLoginPrompt);
 
+    static NAN_METHOD(SetCallbacks);
+
     static NAN_GETTER(GetVarList);
     static NAN_SETTER(SetVarList);
     //static NAN_GETTER(SetEnviro);
@@ -53,7 +55,7 @@ namespace p4node {
     explicit ClientUser();
     ~ClientUser();
 
-    ::ClientUser* _obj;
+    ClientUserWrapper* _obj;
   };
 }
 
