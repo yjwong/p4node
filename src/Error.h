@@ -22,6 +22,7 @@ namespace p4node {
     static NAN_METHOD(GetSeverity);
     static NAN_METHOD(IsFatal);
     static NAN_METHOD(IsWarning);
+    static NAN_METHOD(IsInfo);
     static NAN_METHOD(Net);
     static NAN_METHOD(Set);
     //static NAN_METHOD(Sys);

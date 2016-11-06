@@ -10,6 +10,7 @@ namespace p4node {
     void SetCallbacks(v8::Local<v8::Object> callbacksObj);
 
     void HandleError(::Error *err);
+    void Finished();
 
   private:
     Nan::Persistent<v8::Object> _callbacksObj;

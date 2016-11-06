@@ -39,6 +39,7 @@ namespace p4node {
     Nan::SetPrototypeMethod(tpl, "GetSeverity", GetSeverity);
     Nan::SetPrototypeMethod(tpl, "IsFatal", IsFatal);
     Nan::SetPrototypeMethod(tpl, "IsWarning", IsWarning);
+    Nan::SetPrototypeMethod(tpl, "IsInfo", IsInfo);
     Nan::SetPrototypeMethod(tpl, "Net", Net);
     Nan::SetPrototypeMethod(tpl, "Test", Test);
 
@@ -103,6 +104,12 @@ namespace p4node {
     Nan::HandleScope scope;
     Error* obj = ObjectWrap::Unwrap<Error>(info.This());
     info.GetReturnValue().Set(Nan::New<Number>(obj->_obj->IsWarning()));
+  }
+
+  NAN_METHOD(Error::IsInfo) {
+    Nan::HandleScope scope;
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    info.GetReturnValue().Set(Nan::New<Number>(obj->_obj->IsInfo()));
   }
 
   NAN_METHOD(Error::Net) {
