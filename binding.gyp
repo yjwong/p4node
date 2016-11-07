@@ -8,6 +8,7 @@
         "src/ClientUser.cc",
         "src/ClientUserWrapper.cc",
         "src/Error.cc",
+        "src/ErrorId.cc",
         "src/FileSys.cc",
         "src/StrDict.cc",
         "src/StrPtr.cc"
