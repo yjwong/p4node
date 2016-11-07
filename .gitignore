@@ -34,9 +34,15 @@
 *.sw*
 .ycm_extra_conf.*
 
+# Visual Studio Code
+.vscode/
+
 # node-gyp build directory
 build/
 lib/binding/
+
+# 3rd party dependencies
+deps/
 
 # NPM
 node_modules/
