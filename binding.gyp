@@ -16,6 +16,16 @@
       "cflags_cc!": [],
       "dependencies": [],
       "conditions": [
+        ["OS=='linux'", {
+          "link_settings": {
+            "libraries": [
+              "<(module_root_dir)/deps/p4api/lib/libclient.a",
+              "<(module_root_dir)/deps/p4api/lib/librpc.a",
+              "<(module_root_dir)/deps/p4api/lib/libsupp.a",
+              "<(module_root_dir)/deps/p4api/lib/libp4sslstub.a"
+            ]
+          }
+        }],
         ["OS=='win'", {
           "link_settings": {
             "libraries": [
