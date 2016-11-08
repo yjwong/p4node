@@ -18,8 +18,10 @@ namespace p4node {
     static NAN_METHOD(Clear);
     static NAN_METHOD(Dump);
     //static NAN_METHOD(Fmt);
+    static NAN_METHOD(FmtSeverity);
     static NAN_METHOD(GetGeneric);
     static NAN_METHOD(GetSeverity);
+    static NAN_METHOD(IsError);
     static NAN_METHOD(IsFatal);
     static NAN_METHOD(IsWarning);
     static NAN_METHOD(IsInfo);
@@ -27,6 +29,13 @@ namespace p4node {
     static NAN_METHOD(Set);
     //static NAN_METHOD(Sys);
     static NAN_METHOD(Test);
+
+    static NAN_METHOD(GetErrorCount);
+    static NAN_METHOD(LimitErrorCount);
+
+    static NAN_METHOD(GetId);
+    static NAN_METHOD(CheckId);
+    static NAN_METHOD(GetDict);
 
     explicit Error();
     ~Error();

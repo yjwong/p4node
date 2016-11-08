@@ -17,6 +17,10 @@ namespace p4node {
     delete _obj;
   }
 
+  ::ErrorId* ErrorId::Unwrap() {
+    return _obj;
+  }
+
   void ErrorId::Init(Handle<Object> exports) {
     Nan::HandleScope scope;
 

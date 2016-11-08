@@ -1,4 +1,6 @@
 #include <node.h>
+#include "ErrorId.h"
+#include "StrDict.h"
 #include "Error.h"
 
 using v8::FunctionTemplate;
@@ -8,6 +10,9 @@ using v8::Local;
 using v8::String;
 using v8::Number;
 using v8::Int32;
+using v8::Function;
+using v8::Value;
+using v8::External;
 
 namespace p4node {
   Nan::Persistent<FunctionTemplate> Error::constructor_template;
@@ -35,13 +40,22 @@ namespace p4node {
     // Prototype
     Nan::SetPrototypeMethod(tpl, "Clear", Clear);
     Nan::SetPrototypeMethod(tpl, "Dump", Dump);
+    Nan::SetPrototypeMethod(tpl, "FmtSeverity", FmtSeverity);
     Nan::SetPrototypeMethod(tpl, "GetGeneric", GetGeneric);
     Nan::SetPrototypeMethod(tpl, "GetSeverity", GetSeverity);
+    Nan::SetPrototypeMethod(tpl, "IsError", IsError);
     Nan::SetPrototypeMethod(tpl, "IsFatal", IsFatal);
     Nan::SetPrototypeMethod(tpl, "IsWarning", IsWarning);
     Nan::SetPrototypeMethod(tpl, "IsInfo", IsInfo);
     Nan::SetPrototypeMethod(tpl, "Net", Net);
     Nan::SetPrototypeMethod(tpl, "Test", Test);
+
+    Nan::SetPrototypeMethod(tpl, "GetErrorCount", GetErrorCount);
+    Nan::SetPrototypeMethod(tpl, "LimitErrorCount", LimitErrorCount);
+
+    Nan::SetPrototypeMethod(tpl, "GetId", GetId);
+    Nan::SetPrototypeMethod(tpl, "CheckId", CheckId);
+    Nan::SetPrototypeMethod(tpl, "GetDict", GetDict);
 
     constructor_template.Reset(tpl);
     exports->Set(Nan::New("Error").ToLocalChecked(), tpl->GetFunction());
@@ -82,6 +96,12 @@ namespace p4node {
     info.GetReturnValue().Set(Nan::Undefined());
   }
 
+  NAN_METHOD(Error::FmtSeverity) {
+    Nan::HandleScope scope;
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    info.GetReturnValue().Set(Nan::New(obj->_obj->FmtSeverity()).ToLocalChecked());
+  }
+
   NAN_METHOD(Error::GetGeneric) {
     Nan::HandleScope scope;
     Error* obj = ObjectWrap::Unwrap<Error>(info.This());
@@ -92,6 +112,12 @@ namespace p4node {
     Nan::HandleScope scope;
     Error* obj = ObjectWrap::Unwrap<Error>(info.This());
     info.GetReturnValue().Set(Nan::New<Number>(obj->_obj->GetSeverity()));
+  }
+
+  NAN_METHOD(Error::IsError) {
+    Nan::HandleScope scope;
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    info.GetReturnValue().Set(Nan::New<Number>(obj->_obj->IsError()));
   }
 
   NAN_METHOD(Error::IsFatal) {
@@ -164,5 +190,77 @@ namespace p4node {
     Nan::HandleScope scope;
     Error* obj = ObjectWrap::Unwrap<Error>(info.This());
     info.GetReturnValue().Set(Nan::New<Number>(obj->_obj->Test()));
+  }
+
+  NAN_METHOD(Error::GetErrorCount) {
+    Nan::HandleScope scope;
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    info.GetReturnValue().Set(Nan::New<Number>(obj->_obj->GetErrorCount()));
+  }
+
+  NAN_METHOD(Error::LimitErrorCount) {
+    Nan::HandleScope scope;
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    obj->_obj->LimitErrorCount();
+    info.GetReturnValue().Set(Nan::Undefined());
+  }
+
+  NAN_METHOD(Error::GetId) {
+    Nan::HandleScope scope;
+
+    if (info.Length() < 1) {
+      return Nan::ThrowTypeError("GetId requires at least 1 argument");
+    }
+
+    if (!info[0]->IsInt32()) {
+      return Nan::ThrowTypeError("First argument must be an integer");
+    }
+
+    Local<Int32> id = Nan::To<Int32>(info[0]).ToLocalChecked();
+
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    ::ErrorId* errorId = obj->_obj->GetId(id->Value());
+
+    // Convert ErrorId object to managed ErrorId.
+    Local<FunctionTemplate> tpl = Nan::New(ErrorId::constructor_template);
+    Local<Function> func = tpl->GetFunction();
+    Handle<Value> funcArgs[] = { Nan::New<External>(errorId) };
+    Local<Object> newObj = Nan::NewInstance(func, 1, funcArgs).ToLocalChecked();
+
+    info.GetReturnValue().Set(newObj);
+  }
+
+  NAN_METHOD(Error::CheckId) {
+    Nan::HandleScope scope;
+
+    if (info.Length() < 1) {
+      return Nan::ThrowTypeError("CheckId requires at least 1 argument");
+    }
+
+    if (!info[0]->IsObject()) {
+      return Nan::ThrowTypeError("First argumennt must be an ErrorId object");
+    }
+
+    Local<Object> idObj = info[0]->ToObject();
+    ErrorId* id = ObjectWrap::Unwrap<ErrorId>(idObj);
+    
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    int retval = obj->_obj->CheckId(*id->Unwrap());
+    info.GetReturnValue().Set(Nan::New<Number>(retval));
+  }
+
+  NAN_METHOD(Error::GetDict) {
+    Nan::HandleScope scope;
+
+    Error* obj = ObjectWrap::Unwrap<Error>(info.This());
+    ::StrDict* strDict = obj->_obj->GetDict();
+
+    // Convert StrDict object to managed StrDict.
+    Local<FunctionTemplate> tpl = Nan::New(StrDict::constructor_template);
+    Local<Function> func = tpl->GetFunction();
+    Handle<Value> funcArgs[] = { Nan::New<External>(strDict) };
+    Local<Object> newObj = Nan::NewInstance(func, 1, funcArgs).ToLocalChecked();
+
+    info.GetReturnValue().Set(newObj);
   }
 }
