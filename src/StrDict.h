@@ -20,7 +20,11 @@ namespace p4node {
 
   private:
     static NAN_METHOD(New);
+
+    static NAN_METHOD(SetVar);
     static NAN_METHOD(SetArgv);
+
+    static NAN_METHOD(GetVar);
 
     ::StrDict* _obj;
   };

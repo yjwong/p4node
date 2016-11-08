@@ -16,6 +16,7 @@ namespace p4node {
     ~StrPtr();
 
     static void Init(v8::Handle<v8::Object> exports);
+    ::StrPtr* Unwrap();
 
   private:
     static NAN_METHOD(New);

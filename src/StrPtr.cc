@@ -22,6 +22,10 @@ namespace p4node {
     delete _obj;
   }
 
+  ::StrPtr* StrPtr::Unwrap() {
+    return _obj;
+  }
+
   void StrPtr::Init(Handle<Object> exports) {
     Nan::HandleScope scope;
 
